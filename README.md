@@ -1,31 +1,79 @@
-# 🚀 Création de Sites Web
+# 🌐 Webfly - Site Vitrine Professionnel  
 
-## 📌 Description
-Bienvenue sur le dépôt de mon site web professionnel, conçu pour proposer des services de **création de sites web** aux entreprises et particuliers. Ce site met en avant nos compétences, nos offres et permet aux clients de nous contacter facilement.
-
-## 🖥️ Technologies Utilisées
-- **HTML / CSS / JavaScript** → Structure et interactivité du site
-- **Webflow** → Conception et gestion du site sans code
-- **Stripe** → Gestion des paiements en ligne (optionnel)
-- **SEO Optimisé** → Pour un bon référencement
-- **Hébergement** → Webflow (ou autre selon les besoins)
-
-## 🎯 Fonctionnalités Principales
-✅ Présentation des services 📢
-✅ Formulaire de contact 📩
-✅ Portfolio de nos réalisations 🖼️
-✅ Tarification transparente 💰
-✅ Optimisation mobile 📱
-✅ Blog / FAQ pour répondre aux questions courantes 📝
-
-
-
-## 📝 Personnalisation
-- Modifier les textes et images via Webflow ou le code source
-- Adapter les couleurs et polices selon l'identité visuelle
-- Ajouter de nouvelles sections si nécessaire
-
-
+## 📝 À propos du projet  
+**Webfly** (anciennement **WebCraft**) est un site vitrine conçu pour présenter des services et projets de développement web.  
+Construit avec **React** et **TypeScript**, il est hébergé sur **Firebase** et intègre plusieurs optimisations pour une meilleure expérience utilisateur et un référencement optimal.  
 
 ---
-💡 *Nous aidons les entreprises et particuliers à avoir un site web moderne et performant. Faites-nous confiance pour votre projet !*
+
+## 🚀 Changements récents (**Branche rename-to-webfly**)  
+
+### 🔹 Changement de nom  
+Le site a été renommé de **WebCraft** à **Webfly** pour adopter une nouvelle identité de marque. Les modifications incluent :  
+✅ Mise à jour du titre du site et des **méta-tags**  
+✅ Modification du nom dans le **pied de page**  
+✅ Adaptation de l'interface d'administration  
+
+### 🔍 Améliorations SEO  
+Afin d'améliorer le référencement et la visibilité sur les moteurs de recherche :  
+📌 Ajout de **méta-tags** descriptifs dans l'en-tête HTML  
+📌 Création d'un fichier **robots.txt** pour guider l'indexation  
+📌 Génération d'un **sitemap.xml** pour faciliter l'exploration par les moteurs de recherche  
+
+---
+
+## 🛠️ Technologies utilisées  
+
+### 🔸 Frontend  
+- **React 18** - Bibliothèque JavaScript pour construire l'interface utilisateur  
+- **TypeScript** - Typage statique pour un code plus robuste  
+- **Tailwind CSS** - Framework CSS utilitaire pour un design responsive  
+- **Framer Motion** - Animations fluides et interactives  
+- **Lucide Icons** - Icônes modernes et épurées  
+
+### 🔸 Backend & Outils  
+- **Firebase** - Hébergement, base de données et authentification  
+- **EmailJS** - Service d'envoi d'emails depuis le frontend  
+- **Vite** - Outil de build rapide et moderne  
+
+---
+
+## 🌟 Fonctionnalités  
+
+### 📊 Présentation des services  
+- Section services avec animations au défilement  
+- Présentation des différentes offres et tarifs  
+- Mise en avant des compétences techniques  
+
+### 👥 Témoignages clients  
+- Affichage des avis clients avec système de notation  
+- Design moderne et attrayant  
+
+### 📱 Design responsive  
+- Adaptation parfaite à tous les appareils (mobile, tablette, desktop)  
+- Navigation simplifiée sur mobile  
+
+### 📬 Formulaire de contact  
+- Formulaire interactif avec validation  
+- Intégration EmailJS pour l'envoi direct des messages  
+
+---
+
+## 🚀 Déploiement  
+
+Le site est actuellement déployé sur Firebase et accessible via :  
+🔗 [webfly.store](https://webfly.store)  
+
+---
+
+## 📝 Développement futur  
+
+### 🔜 Fonctionnalités prévues  
+- [ ] Système de blog intégré  
+- [ ] Espace client sécurisé  
+- [ ] Intégration de paiements en ligne  
+- [ ] Système de réservation de consultations  
+
+---
+
+💡 **Note :** Ce README sera mis à jour régulièrement pour refléter les nouvelles fonctionnalités et améliorations du projet.
