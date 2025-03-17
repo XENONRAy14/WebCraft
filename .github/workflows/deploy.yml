@@ -15,7 +15,7 @@ jobs:
 
       - name: Déploiement sur le VPS
         run: |
-          ssh -o StrictHostKeyChecking=no user@ton-vps "cd /chemin/vers/ton/projet && git pull && npm install && npm run build"
+          ssh -o StrictHostKeyChecking=no root@srv465116 "bash /home/marc-kineider-app/htdocs/app.marc-kineider.xyz/deploy.sh"
 
     env:
       SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
