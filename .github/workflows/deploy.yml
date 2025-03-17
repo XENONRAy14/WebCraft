@@ -1,0 +1,21 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main # Change en fonction de ta branche principale
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout du repo
+        uses: actions/checkout@v3
+
+      - name: Déploiement sur le VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no user@ton-vps "cd /chemin/vers/ton/projet && git pull && npm install && npm run build"
+
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
