@@ -21,12 +21,6 @@ type ServiceCardProps = {
   delay?: string;
 };
 
-type ContactFormData = {
-  name: string;
-  email: string;
-  message: string;
-};
-
 type TestimonialProps = {
   name: string;
   role: string;
@@ -492,15 +486,43 @@ const App: React.FC = () => {
     e.preventDefault();
     if (!formRef.current) return;
 
-    const formData = new FormData(formRef.current);
-    const contactData: ContactFormData = {
-      name: formData.get('name') as string,
-      email: formData.get('email') as string,
-      message: formData.get('message') as string
-    };
+    // Afficher un message de chargement
+    const submitButton = formRef.current.querySelector('button[type="submit"]') as HTMLButtonElement;
+    const originalText = submitButton.innerText;
+    submitButton.innerText = 'Envoi en cours...';
+    submitButton.disabled = true;
 
-    // Ici vous pouvez ajouter la logique pour envoyer les données du formulaire
-    console.log('Données du formulaire :', contactData);
+    emailjs.sendForm(
+      emailConfig.serviceId,
+      emailConfig.templateId,
+      formRef.current,
+      emailConfig.publicKey
+    )
+      .then((result) => {
+        console.log('Email envoyé avec succès:', result.text);
+        submitButton.innerText = 'Envoyé !';
+        submitButton.className += ' bg-green-600';
+        formRef.current?.reset();
+        
+        // Réinitialiser le bouton après 3 secondes
+        setTimeout(() => {
+          submitButton.innerText = originalText;
+          submitButton.disabled = false;
+          submitButton.className = submitButton.className.replace(' bg-green-600', '');
+        }, 3000);
+      })
+      .catch((error) => {
+        console.error('Erreur lors de l\'envoi de l\'email:', error);
+        submitButton.innerText = 'Erreur !';
+        submitButton.className += ' bg-red-600';
+        
+        // Réinitialiser le bouton après 3 secondes
+        setTimeout(() => {
+          submitButton.innerText = originalText;
+          submitButton.disabled = false;
+          submitButton.className = submitButton.className.replace(' bg-red-600', '');
+        }, 3000);
+      });
   };
 
   const services: ServiceCardProps[] = [
@@ -873,7 +895,7 @@ const App: React.FC = () => {
                   <Mail className="w-6 h-6 text-violet-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900">Email</h3>
+                  <h3 className="text-lg font-medium text-gradient">Email</h3>
                   <p className="mt-1 text-gray-600">rayanbelho@hotmail.com</p>
                 </div>
               </div>
@@ -883,7 +905,7 @@ const App: React.FC = () => {
                   <Phone className="w-6 h-6 text-violet-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900">Téléphone</h3>
+                  <h3 className="text-lg font-medium text-gradient">Téléphone</h3>
                   <p className="mt-1 text-gray-600">+33651363192</p>
                 </div>
               </div>
@@ -893,13 +915,13 @@ const App: React.FC = () => {
                   <MapPin className="w-6 h-6 text-violet-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900">Adresse</h3>
+                  <h3 className="text-lg font-medium text-gradient">Adresse</h3>
                   <p className="mt-1 text-gray-600">Marseille, France</p>
                 </div>
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                   Nom complet

@@ -19,6 +19,7 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     background-image: linear-gradient(to right, #3498db, #9b59b6);
+    padding-bottom: 0.1em; /* Ajout d'un petit padding en bas pour éviter que les lettres descendantes soient coupées */
   }
 
   .bg-gradient-custom {
