@@ -40,7 +40,6 @@ type ProjectProps = {
 
 type PricingTierProps = {
   name: string;
-  price: string;
   description: string;
   features: string[];
   recommended?: boolean;
@@ -49,11 +48,10 @@ type PricingTierProps = {
 
 interface SmartFormProps {
   selectedPlan: string;
-  price: string;
   onClose: () => void;
 }
 
-const SmartForm: React.FC<SmartFormProps> = ({ selectedPlan, price, onClose }) => {
+const SmartForm: React.FC<SmartFormProps> = ({ selectedPlan, onClose }) => {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -64,7 +62,7 @@ const SmartForm: React.FC<SmartFormProps> = ({ selectedPlan, price, onClose }) =
     email: '',
     phone: '',
     company: '',
-    budget: price,
+    budget: '',
     timeline: '',
     message: '',
     plan: selectedPlan
@@ -356,9 +354,7 @@ const Testimonial: React.FC<TestimonialProps> = ({ name, role, content, rating, 
     >
       <div className="flex mb-4">
         {[...Array(rating)].map((_, i) => (
-          <svg key={i} className="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.967 0 1.71 1.357 1.357 2.158l-3.548 6.658a1 1 0 00-.95.69H4.883c-.967 0-1.71-1.357-1.357-2.158l3.548-6.658a1 1 0 00-.95-.69v-2.675z" />
-          </svg>
+          <span key={i} className="text-yellow-400 text-xl mr-1">★</span>
         ))}
       </div>
       <p className="text-gray-600 mb-4">{content}</p>
@@ -415,7 +411,7 @@ const ProjectCard: React.FC<ProjectProps> = ({ image, title, description, techno
   );
 };
 
-const PricingTier: React.FC<PricingTierProps> = ({ name, price, description, features, recommended, delay }) => {
+const PricingTier: React.FC<PricingTierProps> = ({ name, description, features, recommended, delay }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -424,29 +420,49 @@ const PricingTier: React.FC<PricingTierProps> = ({ name, price, description, fea
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: delay ? parseFloat(delay) : 0 }}
-        className={`relative bg-white rounded-2xl shadow-lg p-8 ${recommended ? 'border-2 border-blue-500' : ''}`}
+        className={`relative bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow ${recommended ? 'border-2 border-blue-500' : ''}`}
       >
         {recommended && (
           <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
             <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm">Recommandé</span>
           </div>
         )}
-        <h3 className="text-2xl font-semibold mb-2">{name}</h3>
-        <div className="mb-4">
-          <span className="text-4xl font-bold">{price}</span>
-          {price !== 'Sur mesure' && <span className="text-gray-600">/projet</span>}
+        
+        <div className="flex flex-col items-center mb-6">
+          <div className={`w-16 h-16 flex items-center justify-center rounded-full mb-4 ${recommended ? 'bg-blue-100' : 'bg-gray-100'}`}>
+            {name === "Site Vitrine" && (
+              <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            )}
+            {name === "E-commerce" && (
+              <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+            )}
+            {name === "Sur Mesure" && (
+              <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            )}
+          </div>
+          <h3 className="text-2xl font-semibold text-center">{name}</h3>
         </div>
-        <p className="text-gray-600 mb-6">{description}</p>
+        
+        <p className="text-gray-600 mb-6 text-center">{description}</p>
+        
         <ul className="space-y-3 mb-8">
           {features.map((feature, index) => (
             <li key={index} className="flex items-start">
-              <svg className="h-6 w-6 text-green-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-6 w-6 text-green-500 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
               <span>{feature}</span>
             </li>
           ))}
         </ul>
+        
         <button
           onClick={() => setIsModalOpen(true)}
           className={`w-full py-3 px-6 rounded-lg transition-colors ${
@@ -455,7 +471,7 @@ const PricingTier: React.FC<PricingTierProps> = ({ name, price, description, fea
               : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
           }`}
         >
-          Obtenir un devis
+          Demander un devis
         </button>
       </motion.div>
 
@@ -468,7 +484,6 @@ const PricingTier: React.FC<PricingTierProps> = ({ name, price, description, fea
             </div>
             <SmartForm
               selectedPlan={name}
-              price={price}
               onClose={() => setIsModalOpen(false)}
             />
           </Modal>
@@ -597,7 +612,6 @@ const App: React.FC = () => {
   const pricingTiers: PricingTierProps[] = [
     {
       name: "Site Vitrine",
-      price: "À partir de 999€",
       description: "Parfait pour les petites entreprises qui souhaitent établir leur présence en ligne.",
       features: [
         "Design personnalisé",
@@ -611,7 +625,6 @@ const App: React.FC = () => {
     },
     {
       name: "E-commerce",
-      price: "À partir de 1999€",
       description: "Solution complète pour vendre vos produits en ligne.",
       features: [
         "Tout du pack Site Vitrine",
@@ -626,7 +639,6 @@ const App: React.FC = () => {
     },
     {
       name: "Sur Mesure",
-      price: "Sur mesure",
       description: "Pour les projets complexes nécessitant des fonctionnalités spécifiques.",
       features: [
         "Analyse des besoins",
@@ -684,7 +696,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 container mx-auto px-4 py-32 text-center">
+        <div className="relative z-10 container mx-auto px-4">
           <div className="flex flex-col items-center justify-center">
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
@@ -850,7 +862,7 @@ const App: React.FC = () => {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-32 bg-white">
+      <section id="pricing" className="py-32 bg-gradient-to-b from-white to-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-20">
             <motion.h2 
@@ -859,7 +871,7 @@ const App: React.FC = () => {
               transition={{ duration: 0.5 }}
               className="text-4xl font-bold mb-4"
             >
-              Nos Tarifs
+              Nos Solutions
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
@@ -867,7 +879,7 @@ const App: React.FC = () => {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="text-gray-600"
             >
-              Des solutions adaptées à tous les budgets, avec un excellent rapport qualité-prix.
+              Des solutions personnalisées pour répondre à vos besoins spécifiques. Contactez-nous pour un devis gratuit.
             </motion.p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">

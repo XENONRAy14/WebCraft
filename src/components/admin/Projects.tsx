@@ -2,10 +2,14 @@ import { useState } from 'react';
 import { useProjects } from '../../context/ProjectContext';
 import Sidebar from './Sidebar';
 import AddProjectModal from './AddProjectModal';
+import EditProjectModal from './EditProjectModal';
 
 const Projects = () => {
-  const { projects, loading, refreshProjects } = useProjects();
+  const { projects, loading, refreshProjects, deleteProject } = useProjects();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
   const handleAddProject = () => {
     setIsAddModalOpen(true);
@@ -13,11 +17,38 @@ const Projects = () => {
 
   const handleCloseModal = () => {
     setIsAddModalOpen(false);
+    setIsEditModalOpen(false);
+    setSelectedProjectId(null);
   };
 
   const handleProjectAdded = () => {
     refreshProjects();
     setIsAddModalOpen(false);
+  };
+
+  const handleEditProject = (projectId: string) => {
+    setSelectedProjectId(projectId);
+    setIsEditModalOpen(true);
+  };
+
+  const handleProjectUpdated = () => {
+    refreshProjects();
+    setIsEditModalOpen(false);
+    setSelectedProjectId(null);
+  };
+
+  const handleDeleteProject = async (projectId: string) => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')) {
+      try {
+        setIsDeleting(projectId);
+        await deleteProject(projectId);
+      } catch (error) {
+        console.error('Erreur lors de la suppression:', error);
+        alert('Une erreur est survenue lors de la suppression du projet');
+      } finally {
+        setIsDeleting(null);
+      }
+    }
   };
 
   if (loading) {
@@ -87,12 +118,21 @@ const Projects = () => {
                     </span>
                   </div>
                   <div className="mt-4 flex justify-end space-x-2">
-                    <button className="text-gray-600 hover:text-violet-600 transition-colors">
+                    <button 
+                      onClick={() => handleEditProject(project.id)}
+                      className="text-gray-600 hover:text-violet-600 transition-colors"
+                      aria-label="Modifier le projet"
+                    >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                       </svg>
                     </button>
-                    <button className="text-gray-600 hover:text-red-600 transition-colors">
+                    <button 
+                      onClick={() => handleDeleteProject(project.id)}
+                      disabled={isDeleting === project.id}
+                      className={`text-gray-600 hover:text-red-600 transition-colors ${isDeleting === project.id ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      aria-label="Supprimer le projet"
+                    >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
@@ -118,6 +158,15 @@ const Projects = () => {
           isOpen={isAddModalOpen}
           onClose={handleCloseModal}
           onSuccess={handleProjectAdded}
+        />
+      )}
+
+      {isEditModalOpen && selectedProjectId && (
+        <EditProjectModal
+          isOpen={isEditModalOpen}
+          onClose={handleCloseModal}
+          onSuccess={handleProjectUpdated}
+          projectId={selectedProjectId}
         />
       )}
     </>

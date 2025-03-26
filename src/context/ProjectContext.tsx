@@ -6,7 +6,10 @@ import {
   orderBy,
   Timestamp,
   DocumentData,
-  limit
+  limit,
+  doc,
+  deleteDoc,
+  updateDoc
 } from 'firebase/firestore';
 import { db } from '../services/firebase';
 
@@ -24,6 +27,8 @@ interface ProjectContextType {
   loading: boolean;
   error: string | null;
   refreshProjects: () => void;
+  deleteProject: (id: string) => Promise<void>;
+  updateProject: (id: string, data: Partial<Project>) => Promise<void>;
 }
 
 const ProjectContext = createContext<ProjectContextType | null>(null);
@@ -46,6 +51,32 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
   const refreshProjects = useCallback(() => {
     setRefreshTrigger(prev => prev + 1);
   }, []);
+
+  // Fonction pour supprimer un projet
+  const deleteProject = useCallback(async (id: string) => {
+    try {
+      const projectRef = doc(db, 'projects', id);
+      await deleteDoc(projectRef);
+      refreshProjects();
+      return Promise.resolve();
+    } catch (error) {
+      console.error('Erreur lors de la suppression du projet:', error);
+      return Promise.reject(error);
+    }
+  }, [refreshProjects]);
+
+  // Fonction pour mettre à jour un projet
+  const updateProject = useCallback(async (id: string, data: Partial<Project>) => {
+    try {
+      const projectRef = doc(db, 'projects', id);
+      await updateDoc(projectRef, data);
+      refreshProjects();
+      return Promise.resolve();
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour du projet:', error);
+      return Promise.reject(error);
+    }
+  }, [refreshProjects]);
 
   useEffect(() => {
     try {
@@ -94,7 +125,9 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
     projects,
     loading,
     error,
-    refreshProjects
+    refreshProjects,
+    deleteProject,
+    updateProject
   };
 
   return (
