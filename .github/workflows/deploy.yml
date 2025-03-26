@@ -1,0 +1,21 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main # Change en fonction de ta branche principale
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout du repo
+        uses: actions/checkout@v3
+
+      - name: Déploiement sur le VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no root@srv465116 "bash /home/marc-kineider-app/htdocs/app.marc-kineider.xyz/deploy.sh"
+
+    env:
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
